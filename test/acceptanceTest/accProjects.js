@@ -5,6 +5,8 @@ var request = require('superagent');
 require('superagent-proxy')(request);
 var expect = require('chai').expect;
 
+var project = require('../../lib/projectLib');
+
 describe('Projects',function(){
 
 	this.timeout(5000);
@@ -17,14 +19,11 @@ describe('Projects',function(){
 
             //making sure that there is a project to delete
             if(id !== -1){
-            	request
-            		.del('http://todo.ly/api/projects/'+id+'.json')
-                    //.proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                .end(function(err,res){
-                	done();
 
-                });
+                project.del(id,function(err, res){
+                    console.log(res.body.Content);
+                    done();
+                });            	
             }
             else {done();}
 
@@ -33,18 +32,19 @@ describe('Projects',function(){
         it('POST /project.json creates a project',function(done){
             
             var prjJson = {
-                Content:'SuperAgentProxy',
+                Content:'Project Refactored',
                 Icon:4
             };
             request
                 .post('http://todo.ly/API/Projects.json')
-                //.proxy('http://172.20.240.5:8080')
+                .proxy('http://172.20.240.5:8080')
                 .auth('gordines007@gmail.com','control123')
                 .send(prjJson)
             .end(function(err,res){
 
                 id = res.body.Id;
-                //expect(res.status).to.equal(200);
+                
+                expect(res.status).to.equal(200);
                 expect(res.body.Content).to.equal(prjJson.Content);
                 expect(res.body.Icon).to.equal(prjJson.Icon);
                 expect(res.body.Deleted).to.equal(false);
@@ -64,7 +64,7 @@ describe('Projects',function(){
                 
                 request
                     .post('http://todo.ly/API/Projects.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(preJson)
                 .end(function(err,res){
@@ -78,7 +78,7 @@ describe('Projects',function(){
                 
                 request
                     .get('http://todo.ly/api/projects/'+id+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                 .end(function(err,res){
 
@@ -98,7 +98,7 @@ describe('Projects',function(){
                 };
                 request
                     .put('http://todo.ly/api/projects/'+id+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(updateJson)
                 .end(function(err,res){
@@ -110,14 +110,9 @@ describe('Projects',function(){
                 });
             });
 
-            it('DELETE /project by id deletes a project',function(done){
+            it.only('DELETE /project by id deletes a project',function(done){
                 
-                request
-                    .del('http://todo.ly/api/projects/'+id+'.json')
-                    //.proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                .end(function(err,res){
-
+                project.del(id,function(err, res){
                     expect(res.status).to.equal(200);
                     expect(res.body.Id).to.equal(id);
                     expect(res.body.Content).to.equal(preJson.Content);

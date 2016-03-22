@@ -17,14 +17,14 @@ describe('Items',function(){
             if(idItem !== -1){
             	request
             		.del('http://todo.ly/api/items/'+idItem+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                 .end(function(err,res){
 
                 	//emptying the recycleBin
                 	request
                 		.del('http://todo.ly/API/Filters/-4/Items.json')
-                		//.proxy('http://172.20.240.5:8080')
+                		.proxy('http://172.20.240.5:8080')
                     	.auth('gordines007@gmail.com','control123')
                 	.end(function(err, res){
                 		done();
@@ -45,7 +45,7 @@ describe('Items',function(){
             };
             request
                 .post('http://todo.ly/API/items.json')
-                //.proxy('http://172.20.240.5:8080')
+                .proxy('http://172.20.240.5:8080')
                 .auth('gordines007@gmail.com','control123')
                 .send(itemJson)
             .end(function(err,res){
@@ -70,7 +70,7 @@ describe('Items',function(){
                 
                 request
                     .post('http://todo.ly/API/items.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(preItemJson)
                 .end(function(err,res){
@@ -84,7 +84,7 @@ describe('Items',function(){
                 
                 request
                     .get('http://todo.ly/api/items/'+idItem+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                 .end(function(err,res){
 
@@ -102,7 +102,7 @@ describe('Items',function(){
                 };
                 request
                     .put('http://todo.ly/api/items/'+idItem+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(updateItemJson)
                 .end(function(err,res){
@@ -117,7 +117,7 @@ describe('Items',function(){
                 
                 request
                     .del('http://todo.ly/api/items/'+idItem+'.json')
-                    //.proxy('http://172.20.240.5:8080')
+                    .proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                 .end(function(err,res){
 
@@ -129,7 +129,7 @@ describe('Items',function(){
                     //emptying the recycleBin
                 	request
                 		.del('http://todo.ly/API/Filters/-4/Items.json')
-                		//.proxy('http://172.20.240.5:8080')
+                		.proxy('http://172.20.240.5:8080')
                     	.auth('gordines007@gmail.com','control123')
                 	.end(function(err, res){
                 		done();
