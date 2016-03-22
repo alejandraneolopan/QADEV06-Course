@@ -3,7 +3,6 @@
 
 var request = require('superagent');
 require('superagent-proxy')(request);
-
 var expect = require('chai').expect;
 
 describe('Projects',function(){
@@ -22,8 +21,8 @@ describe('Projects',function(){
             		.del('http://todo.ly/api/projects/'+id+'.json')
                     //.proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
-                    .end(function(err,res){
-                    	done();
+                .end(function(err,res){
+                	done();
 
                 });
             }
@@ -42,14 +41,14 @@ describe('Projects',function(){
                 //.proxy('http://172.20.240.5:8080')
                 .auth('gordines007@gmail.com','control123')
                 .send(prjJson)
-                .end(function(err,res){
+            .end(function(err,res){
 
-                    id = res.body.Id;
-                    //expect(res.status).to.equal(200);
-                    expect(res.body.Content).to.equal(prjJson.Content);
-                    expect(res.body.Icon).to.equal(prjJson.Icon);
-                    expect(res.body.Deleted).to.equal(false);
-                    done();
+                id = res.body.Id;
+                //expect(res.status).to.equal(200);
+                expect(res.body.Content).to.equal(prjJson.Content);
+                expect(res.body.Icon).to.equal(prjJson.Icon);
+                expect(res.body.Deleted).to.equal(false);
+                done();
             });
         });
 
@@ -68,10 +67,10 @@ describe('Projects',function(){
                     //.proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(preJson)
-                    .end(function(err,res){
-                        id = res.body.Id;
-                        done();
-                    });
+                .end(function(err,res){
+                    id = res.body.Id;
+                    done();
+                });
             });
 
             
@@ -81,14 +80,14 @@ describe('Projects',function(){
                     .get('http://todo.ly/api/projects/'+id+'.json')
                     //.proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
-                    .end(function(err,res){
+                .end(function(err,res){
 
-                        expect(res.status).to.equal(200);
-                        expect(res.body.Content).to.equal(preJson.Content);
-                        expect(res.body.Icon).to.equal(preJson.Icon);
-                        done();
+                    expect(res.status).to.equal(200);
+                    expect(res.body.Content).to.equal(preJson.Content);
+                    expect(res.body.Icon).to.equal(preJson.Icon);
+                    done();
 
-                    });
+                });
             });
 
             it('PUT /project by id updates a project',function(done){
@@ -102,13 +101,13 @@ describe('Projects',function(){
                     //.proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
                     .send(updateJson)
-                    .end(function(err,res){
+                .end(function(err,res){
 
-                        expect(res.status).to.equal(200);
-                        expect(res.body.Content).to.equal(updateJson.Content);
-                        expect(res.body.Icon).to.equal(updateJson.Icon);
-                        done();
-                    });
+                    expect(res.status).to.equal(200);
+                    expect(res.body.Content).to.equal(updateJson.Content);
+                    expect(res.body.Icon).to.equal(updateJson.Icon);
+                    done();
+                });
             });
 
             it('DELETE /project by id deletes a project',function(done){
@@ -117,17 +116,17 @@ describe('Projects',function(){
                     .del('http://todo.ly/api/projects/'+id+'.json')
                     //.proxy('http://172.20.240.5:8080')
                     .auth('gordines007@gmail.com','control123')
-                    .end(function(err,res){
+                .end(function(err,res){
 
-                        expect(res.status).to.equal(200);
-                        expect(res.body.Id).to.equal(id);
-                        expect(res.body.Content).to.equal(preJson.Content);
-                        expect(res.body.Icon).to.equal(preJson.Icon);
-                        expect(res.body.Deleted).to.equal(true);
-                        id=-1;//this is to avoid the afterEach is executed again
-                        done();
+                    expect(res.status).to.equal(200);
+                    expect(res.body.Id).to.equal(id);
+                    expect(res.body.Content).to.equal(preJson.Content);
+                    expect(res.body.Icon).to.equal(preJson.Icon);
+                    expect(res.body.Deleted).to.equal(true);
+                    id=-1;//this is to avoid the afterEach is executed again
+                    done();
 
-                    });
+                });
             });
         });
     });
