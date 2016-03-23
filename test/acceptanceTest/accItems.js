@@ -1,6 +1,6 @@
 //accItems
-var request = require('superagent');
-require('superagent-proxy')(request);
+
+var item = require('../../lib/itemLib');
 var expect = require('chai').expect;
 
 describe('Items',function(){
@@ -8,30 +8,18 @@ describe('Items',function(){
 	this.timeout(5000);
 	this.slow(4000);
 
-	var idItem=-1;
+	var itemId=-1;
 
     describe('CRUD Operations',function(){
     	afterEach('Delete the Item created',function(done){
 
             //making sure that there is a Item to delete
-            if(idItem !== -1){
-            	request
-            		.del('http://todo.ly/api/items/'+idItem+'.json')
-                    .proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                .end(function(err,res){
-
+            if(itemId !== -1){
+            	item.del(itemId,function(err,res){
                 	//emptying the recycleBin
-                	request
-                		.del('http://todo.ly/API/Filters/-4/Items.json')
-                		.proxy('http://172.20.240.5:8080')
-                    	.auth('gordines007@gmail.com','control123')
-                	.end(function(err, res){
+                    item.emptyRecycleBin(function(err, res){
                 		done();
                 	});
-                	
-                	
-
                 });
             }
             else {done();}
@@ -43,14 +31,9 @@ describe('Items',function(){
             var itemJson = {
                 Content:'Item-superagent',                
             };
-            request
-                .post('http://todo.ly/API/items.json')
-                .proxy('http://172.20.240.5:8080')
-                .auth('gordines007@gmail.com','control123')
-                .send(itemJson)
-            .end(function(err,res){
+            item.post(itemJson,function(err,res){
 
-                idItem = res.body.Id;
+                itemId = res.body.Id;
                 expect(res.status).to.equal(200);
                 expect(res.body.Content).to.equal(itemJson.Content);
                 expect(res.body.Deleted).to.equal(false);
@@ -68,13 +51,8 @@ describe('Items',function(){
 
             beforeEach('Creates item for the tests',function(done){
                 
-                request
-                    .post('http://todo.ly/API/items.json')
-                    .proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                    .send(preItemJson)
-                .end(function(err,res){
-                    idItem = res.body.Id;
+                item.post(preItemJson,function(err,res){
+                    itemId = res.body.Id;
                     done();
                 });
             });
@@ -82,12 +60,7 @@ describe('Items',function(){
             
             it('GET /Item by id returns an item',function(done){
                 
-                request
-                    .get('http://todo.ly/api/items/'+idItem+'.json')
-                    .proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                .end(function(err,res){
-
+                item.get(itemId,function(err,res){
                     expect(res.status).to.equal(200);
                     expect(res.body.Content).to.equal(preItemJson.Content);
                     done();
@@ -100,13 +73,7 @@ describe('Items',function(){
                 var updateItemJson = {
                     Content:'Item Updated'
                 };
-                request
-                    .put('http://todo.ly/api/items/'+idItem+'.json')
-                    .proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                    .send(updateItemJson)
-                .end(function(err,res){
-
+                item.put(itemId,updateItemJson,function(err,res){
                     expect(res.status).to.equal(200);
                     expect(res.body.Content).to.equal(updateItemJson.Content);
                     done();
@@ -115,23 +82,17 @@ describe('Items',function(){
 
             it('DELETE /item by id deletes an item',function(done){
                 
-                request
-                    .del('http://todo.ly/api/items/'+idItem+'.json')
-                    .proxy('http://172.20.240.5:8080')
-                    .auth('gordines007@gmail.com','control123')
-                .end(function(err,res){
+                item.del(itemId,function(err,res){
+                    var idAux = id;
+                    id=-1;//this is to avoid the afterEach is executed again
 
                     expect(res.status).to.equal(200);
-                    expect(res.body.Id).to.equal(idItem);
+                    expect(res.body.Id).to.equal(idAux);
                     expect(res.body.Content).to.equal(preItemJson.Content);
                     expect(res.body.Deleted).to.equal(true);
-                    id=-1;//this is to avoid the afterEach is executed again
+                    
                     //emptying the recycleBin
-                	request
-                		.del('http://todo.ly/API/Filters/-4/Items.json')
-                		.proxy('http://172.20.240.5:8080')
-                    	.auth('gordines007@gmail.com','control123')
-                	.end(function(err, res){
+                	item.emptyRecycleBin(function(err, res){
                 		done();
                 	});
 

@@ -1,0 +1,15 @@
+{
+	"proxy":"http://172.20.240.5:8080",
+
+	"account":"gordines007@gmail.com",
+	"password":"control123",
+
+	"projectsURL":"http://todo.ly/API/Projects.json",
+	"projectURLById":"http://todo.ly/API/Projects/[id].json",
+	"itemsURL":"http://todo.ly/API/Items.json",
+	"itemsURLById":"http://todo.ly/API/Items/[id].json",
+	"recycleBin":"http://todo.ly/API/Filters/-4/Items.json"
+
+
+
+}
